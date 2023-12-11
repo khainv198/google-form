@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        width: 100%;
+        min-height: 100vh;
+        font-size: 30px;
+        line-height: 1.5;
+        padding: 0 16px;
+      }
+
+      .item {
+        padding: 0 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div v-for="(item, idx) in items" class="item">
+        <p style="margin-bottom: 6px">
+          <strong>Câu Hỏi: </strong> {{ item.cauHoi }}
+        </p>
+        <p><strong>Đáp án: </strong>{{ item.dapAn }}</p>
+        <div style="height: 3px; background-color: #000; margin: 20px 0"></div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const DATA = [
+        {
+          cauHoi:
+            "Khi gửi email xin ý kiến/báo cáo CBLĐ, người gửi cần làm như thế nào?",
+          dapAn:
+            "Tóm tắt sự việc và nội dung cần xin ý kiến một cách rõ ràng, đủ ý.",
+        },
+        {
+          cauHoi:
+            "Vi phạm cách thức trao đổi thông tin mà chưa ảnh hưởng đến hoạt động kinh doanh/vận hành. hình ảnh, uy tín của Tập đoàn/Công ty sẽ áp dụng hình thức xử lý kỉ luật lỗi nhóm nào?",
+          dapAn: "Nhóm 2: Các lỗi lớn",
+        },
+        {
+          cauHoi:
+            "Theo quy định nội bộ chung, trong các loại khen thưởng dưới đây, đâu không phải là nhóm khen thưởng của Tập đoàn?",
+          dapAn: "Thưởng đột xuất",
+        },
+        {
+          cauHoi: "Tầm nhìn của Vingroup là?",
+          dapAn:
+            "Bằng khát vọng tiên phong cùng chiến lược đầu tư - phát triển bền vững, Vingroup định hướng phát triển thành một Tập đoàn Công nghệ - Công nghiệp - Thương mại Dịch vụ hàng đầu khu vực, không ngừng đổi mới, sáng tạo để kiến tạo hệ sinh thái các sản phẩm dịch vụ đẳng cấp, góp phần nâng cao chất lượng cuộc sống của Nhân loại và nâng tầm vị thế của thương hiệu Việt trên trường quốc tế.",
+        },
+        {
+          cauHoi:
+            "Môi trường làm việc của Vingroup bao gồm những tiêu chí nào?",
+          dapAn: "Cả 3 đáp án trên",
+        },
+        {
+          cauHoi:
+            "CBNV phải báo cáo khẩn cho CBLĐ có thẩm quyền trong trường hợp nào? (nội quy cũ)",
+          dapAn:
+            "Khi xảy ra các sự cố/sự việc nghiêm trọng, ngoài khả năng xử lý.",
+        },
+        {
+          cauHoi: "Tháng lương 13 là?",
+          dapAn:
+            "Áp dụng với CBLĐ đã ký HĐLĐ chính thức tại Công ty và làm việc tối thiểu 03 tháng liên tục tại Công ty (hoặc Công ty khác thuộc Tập đoàn) tính đến ngày 31 tháng 12, mức hưởng cụ thể được tính theo tỷ lệ số tháng làm việc thực tế tại Công ty trong năm và mức thu nhập trung bình tháng của CBNV theo các nội dung: Mức lương + Thưởng YTCLCV + Phụ cấp, nếu có.",
+        },
+        {
+          cauHoi: "Quy định sử dụng Tập đoàn ca?",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi:
+            "Chi phí Tiệc mừng kỷ niệm ngày thành lập Tập đoàn/liên hoan cuối năm là?",
+          dapAn: "500.000 đồng/người/dịp.",
+        },
+        {
+          cauHoi:
+            "Quà trong các dịp lễ, tết [ Ngày 30/04 & 01/5, 02/9 và Tết Dương Lịch và các ngày lễ, tết còn lại ]: CBNV được tặng quà với mức? (mức hưởng cụ thể tính theo tỷ lệ số tháng làm việc thực tế và được chi trả một lần vào cuối năm (trước Tết âm lịch).",
+          dapAn: "3.500.000 đồng/người/năm",
+        },
+        {
+          cauHoi:
+            "CBNV lập hội nhóm trên ứng dụng mạng xã hội (zalo, viber,...) để trao đổi công việc mà không được phép có thể bị xử lý như thế nào?",
+          dapAn: "Trừ từ 30% đến 100% thưởng YTCLCV của 01 tháng",
+        },
+        {
+          cauHoi:
+            "Thưởng giới thiệu ứng viên với các vị trí tuyển dụng là cấp T5,6. Mức thưởng là? (đã hoàn thành thời gian thử việc và được ký HĐLĐ).\n",
+          dapAn: "Thưởng 5 triệuVNĐ/1 nhân sự được giới thiệu thành công",
+        },
+        {
+          cauHoi:
+            'Hãy điền vào 3 chấm để làm rõ Tầm nhìn của Vingrouop: "Bằng khát vọng tiên phong cùng chiến lược đầu tư - phát triển bền vững, Vingroup định hướng phát triển thành một Tập đoàn Công nghệ - Công nghiệp - Thương mại Dịch vụ hàng đầu khu vực, không ngừng đổi mới, sáng tạo để kiến tạo hệ sinh thái các sản phẩm dịch vụ đẳng cấp, góp phần ..................................trên trường quốc tế.',
+          dapAn:
+            "nâng cao chất lượng cuộc sống của Nhân loại và nâng tầm vị thế của thương hiệu Việt",
+        },
+        {
+          cauHoi:
+            "Sử dụng trái phép chất ma túy sẽ bị xử phạt theo lỗi nhóm nào?",
+          dapAn: "Nhóm 1: Các lỗi đặc biệt nghiêm trọng",
+        },
+        {
+          cauHoi:
+            "Có được tặng hoa, tặng quà sinh nhật cho CBLĐ, tổ chức chúc mừng sinh nhật cho CBNV tại nơi làm việc không?",
+          dapAn: "Không",
+        },
+        {
+          cauHoi: "Mức ưu đãi học phí Vinschool của CBNV (Cấp T7,8) là?",
+          dapAn: "Mức ưu đãi 10%",
+        },
+        {
+          cauHoi:
+            "Chế độ hỗ trợ đặc thù Phun thuốc/ Tiếp xúc với khóa chất áp dụng Nhân viên thủ kho, mức hỗ trợ là gì?\n",
+          dapAn: "Số tiền hỗ trợ 300.000 VNĐ/tháng",
+        },
+        {
+          cauHoi:
+            "Trực tiếp tham gia xử lý, ngăn chặn kịp thời các sự cố cháy nổ, hỏa hoạn xảy ra tại các khu vực của Tập đoàn/Công ty. Mức thưởng là?",
+          dapAn: "Thưởng tiền đến 20 triệu đồng/lần.",
+        },
+        {
+          cauHoi:
+            "CBNV nhận hối lộ của nhà thầu để nhà thầu lén lút mang vật liệu ra ngoài hoặc ăn bớt nguyên vật liệu trong quá trình thi công, sửa chữa sẽ bị xử lý vi phạm theo lỗi nhóm nào?",
+          dapAn: "Nhóm 1: Các lỗi đặc biệt nghiêm trọng",
+        },
+        {
+          cauHoi:
+            "Trường hợp nào sau đây vi phạm quy định về xưng hô, chào hỏi trong giao tiếp ?",
+          dapAn:
+            "Cấp trên  xưng là “Em” với cấp dưới và cấp dưới xưng là “Anh, Chị” với cấp trên trong quan hệ công việc.",
+        },
+        {
+          cauHoi:
+            "Không được mang/sử dụng đồ ăn, uống trong phòng họp trừ trường hợp nào sau đây?",
+          dapAn: "Cả a và b đều đúng",
+        },
+        {
+          cauHoi:
+            "Cán bộ kiểm soát thiết kế (“KSTK”), CBNV liên quan trong quá trình làm việc phát hiện được lỗi thiết kế tại các bản vẽ được thưởng?",
+          dapAn:
+            "500.000 đồng/lỗi thiết kế sai hoặc thiếu bản vẽ; 1.000.000 đồng/lỗi thiếu 01 hạng mục.",
+        },
+        {
+          cauHoi: "CBLĐ Ra quyết định vượt quyền, hình thức xử lý là gì?\n",
+          dapAn: "Xử lý vi phạm lỗi Nhóm 1",
+        },
+        {
+          cauHoi:
+            "Theo Quy định nội bộ chung không áp dụng hành vi nào sau đây trong giao tiếp nội bộ?",
+          dapAn: "Bắt tay đồng nghiệp",
+        },
+        {
+          cauHoi: "CBNV cấp T5, 6 được ưu đãi khi sử dụng dịch vụ nội bộ nào?",
+          dapAn: "Vinmec, Vinpearl, Vinschool, VinUni, Brighton College",
+        },
+        {
+          cauHoi:
+            "CBLĐ Vi phạm các nguyên tắc quản lý Ngân sách, hình thức xử lý là gì?",
+          dapAn: "Xử lý vi phạm lỗi Nhóm 1",
+        },
+        {
+          cauHoi:
+            "CBNV tố cáo hành vi tiêu cực, trộm cắp, tham nhũng trong toàn Tập đoàn (cho TGĐ Tập đoàn theo địa chỉ hòm thư v.quangnv@vingroup.net, số điện thoại: 0983466868) mà các thông tin này sau khi điều tra, xác minh được xác định là có cơ sở. Trong trường hợp giá trị tài sản/tiền tham ô, trộm cắp, nhận hối lộ bị tố cáo ≤ 50 triệu đồng. Mức thưởng là?",
+          dapAn: "Thưởng 150 triệu đồng/lần",
+        },
+        {
+          cauHoi:
+            'Chế độ hỗ trợ đặc thù khi thực hiện công việc Nghiệm thu – Bàn giao tại BQL Vận hành" CBNVkhối Vận hành tại các KĐT trong giai đoạn nghiệm thu, bàn giao tại công trường;  Phải dùng điện thoại cá nhân để làm việc, môi trường làm việc chưa hoàn thiện (khói bụi công trường)" áp dụng với Các chức danh thực tế tham gia tại từng giai đoạn, mức hỗ trợ là gì?\n',
+          dapAn: "Số tiền hỗ trợ 300.000 VNĐ/tháng",
+        },
+        {
+          cauHoi:
+            "Cung cấp thông tin có giá trị tới Hotline ANBV/ Tổng đài hoặc kênh khác để giúp bắt được các đối tượng trộm cắp trong các khu vực của Tập đoàn (không thuộc trường hợp tố cáo đối tượng trộm cắp là CBNV Tập đoàn theo mục 2.4.4)  mức thưởng là gì?\n",
+          dapAn: "Thưởng từ 10 triệu đến 15 triệu đồng/lần.",
+        },
+        {
+          cauHoi: "Quy định bảo mật thông tin?",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi:
+            '"Bắt quả tang nhà thầu/nhà cung cấp đưa tiền hối lộ, tặng quà hoặc trích hoa hồng cho mình hoặc đồng nghiệp của mình và đủ điều kiện để phạt nhà thầu/nhà cung cấp theo điều khoản chống tham nhũng đã ký trong Hợp đồng" mức thưởng là?',
+          dapAn: "Thưởng 75 triệu đồng/lần.",
+        },
+        {
+          cauHoi:
+            "Ngày phép năm chưa được sử dụng hết có thể được gia hạn sử dụng tới?",
+          dapAn: "31/3 của năm tiếp theo.",
+        },
+        {
+          cauHoi:
+            "CBNV được mua bảo hiểm sức khỏe Vingroup (“VGR”) cho bản thân sau khi?",
+          dapAn: "Ngay sau khi ký HĐLĐ chính thức",
+        },
+        {
+          cauHoi:
+            "Trường hợp không thể giữ liên lạc qua email, phải sử dụng công cụ trả lời tự động nào để người gửi email biết được khoảng thời gian vắng mặt và cách thức liên lạc trao đổi công việc?",
+          dapAn: "Autoreply",
+        },
+        {
+          cauHoi:
+            "Chế độ hỗ trợ đặc thù khi thực hiện công việc Ngoài trời/ Trên cao (môi trường nắng nóng/khắc nghiệt/mưa bão/khói bụi/gần công trường) áp dụng với Đội trưởng, Tổ trưởng, Nhân viên: Bảo vệ, HK, Cây xanh, Kỹ thuật, mức hỗ trợ là gì?\n",
+          dapAn: "Số tiền hỗ trợ 500.000 VNĐ/tháng",
+        },
+        {
+          cauHoi:
+            "CBLĐ quản lý trực tiếp CBNV liên quan trong quá trình làm việc phát hiện được lỗi thiết kế tại các bản vẽ được thưởng?",
+          dapAn: "Bằng 20% mức thưởng áp dụng với CBNV.",
+        },
+        {
+          cauHoi:
+            "CBNV có trách nhiệm báo cáo mọi vi phạm thuộc Nhóm 1 và Nhóm 2 (theo quy định dưới đây) khi phát hiện được cho ai?",
+          dapAn: "Bộ phận Thanh tra/CBLĐ.",
+        },
+        {
+          cauHoi: "Văn hóa người Vingroup?",
+          dapAn: "Công bằng, Kỷ luật, Văn minh",
+        },
+        {
+          cauHoi: "Mức ưu đãi học phí Vinschool của CBNV (Cấp T5,6) là?",
+          dapAn: "Cấp T5: 15%;  Cấp T6: 10%",
+        },
+        {
+          cauHoi: "Nguyên tắc giao việc?",
+          dapAn: "Cả a và b đều đúng",
+        },
+        {
+          cauHoi:
+            "Quy định truy cập, sử dụng hệ thống Công nghệ thông tin (“CNTT”) của Tập đoàn là? (nội quy cũ)",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi:
+            "CBNV phải giữ gìn trật tự, an ninh, an toàn, vệ sinh tại nơi làm việc, cụ thể là gì?",
+          dapAn:
+            "Không được uống rượu bia, không sử dụng chất kích thích tại nơi làm việc",
+        },
+        {
+          cauHoi:
+            "Chế độ hỗ trợ đặc thù khu vực công trường đang thi công (khu vực công trường đang thi công điều kiện làm việc khó khăn) áp dụng Đội trưởng Bảo vệ/Tổ trưởng/Nhân viên bảo vệ, mức hỗ trợ là gì?\n",
+          dapAn: "Số tiền hỗ trợ 1.000.000 VNĐ/tháng",
+        },
+        {
+          cauHoi:
+            "Trực tiếp/phối hợp với các lực lượng bắt giữ được các vụ Trộm cắp tài sản có giá trị ≤ 2 triệu đồng tại các khu vực của Tập đoàn/Công ty. Mức thưởng là?",
+          dapAn: "Thưởng 5 triệu đồng/lần.",
+        },
+        {
+          cauHoi:
+            "Những lưu ý khi sử dụng dịch vụ tại Trường Mầm non và PTLC Vinschool, Trường Đại học VinUni?",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi:
+            "Để thuận tiện trong việc trao đổi công việc, CBNV có thể thực hiện việc nào sau đây?",
+          dapAn:
+            "Sử dụng các ứng dụng được phép (như Lync, MS Teams) để trao đổi công việc.",
+        },
+        {
+          cauHoi:
+            'CBNV ốm đau, bệnh tật, tai nạn "Mức rất nghiêm trọng (mất sức lao động, tử vong…)" được hỗ trợ?',
+          dapAn:
+            "CBNV gặp nạn được xem xét mức hỗ trợ từ 50 triệu – 300 triệu đồng (trích từ quỹ phúc lợi Công ty) hoặc chuyển Quỹ Thiện Tâm hỗ trợ nếu có gia cảnh đặc biệt.",
+        },
+        {
+          cauHoi:
+            "Thưởng giới thiệu ứng viên với các vị trí tuyển dụng là cấp T4. Mức thưởng là? (đã hoàn thành thời gian thử việc và được ký HĐLĐ).\n",
+          dapAn: "Thưởng 20 triệu VNĐ/1 nhân sự được giới thiệu thành công",
+        },
+        {
+          cauHoi:
+            'CBNV "có được" thực hiện giao dịch, giao kết (trực tiếp hoặc gián tiếp qua bên trung gian) với đối tác là doanh nghiệp/tổ chức nếu biết rõ doanh nghiệp/tổ chức đó có CBLĐ hoặc người đã từng là CBLĐ trong Tập đoàn là chủ sở hữu/góp vốn hoặc điều hành không?\n',
+          dapAn: "Không",
+        },
+        {
+          cauHoi: 'Trong quy định về ứng xử "nghiêm cấm" hành vi nào?',
+          dapAn: "Cả a và b đều đúng.",
+        },
+        {
+          cauHoi: "Có mấy hình thức khen thưởng thành tích?",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi: "CBNV cấp T4, T5, T6 đi làm muộn, hình thức xử lý là?",
+          dapAn: "Trừ 300.000đ Thưởng YTCLCV của 1 tháng",
+        },
+        {
+          cauHoi:
+            "CBNV Bảo vệ đi vào góc khuất camera quá 5 phút/lần sẽ bị xử lý như thế nào?\n",
+          dapAn: "Cả a và b",
+        },
+        {
+          cauHoi: "Đánh chửi nhau trong giờ làm việc vi phạm nhóm lỗi nào?",
+          dapAn: "Nhóm 1: Các lỗi đặc biệt nghiêm trọng",
+        },
+        {
+          cauHoi:
+            "Chế độ hỗ trợ đặc thù khu vực Bể bơi (CBNV tiếp xúc với môi trường mùi Clo, không khi oi nóng/bí nóng)  áp dụng  Tổ trưởng, Nhân viên: Tiện ích công cộng/Lễ tân/Cứu hộ, mức hỗ trợ là gì?\n",
+          dapAn: "Số tiền hỗ trợ 300.000 VNĐ/tháng",
+        },
+        {
+          cauHoi: 'CBNV cần làm gì để  "đảm bảo an ninh thông tin"',
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi:
+            "Tiêu chuẩn năng lực của CBNV (T7,8): CBNV phải tham gia đào tạo và thi để lấy đủ chứng chỉ năng lực yêu cầu cho chức danh đảm trách, trong thời hạn?",
+          dapAn: "Cả 2 đáp an trên đều đúng",
+        },
+        {
+          cauHoi:
+            "Điều kiện thưởng, thời gian trả thưởng giới thiệu ứng viên là?\n",
+          dapAn: "Cả 3 đáp án trên",
+        },
+        {
+          cauHoi:
+            "Việc giao việc cho CBNV cấp dưới gián tiếp được thực hiện trong trường hợp nào?",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi:
+            "Mức ưu đãi học phí VinUni, Brighton College của CBNV (Cấp T7,8) là?",
+          dapAn: "Mức ưu đãi 5%",
+        },
+        {
+          cauHoi:
+            "Các CBLĐ phụ trách Khối/Phòng bị xử lý liên đới nếu để xảy ra các vi phạm trên diện rộng, cụ thể là?\n",
+          dapAn: "Cả a và b đều đúng",
+        },
+        {
+          cauHoi: "Quy định khi gửi mail trong nội bộ?",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi:
+            "Thưởng giới thiệu ứng viên với các vị trí tuyển dụng là Nhân viên (T8). Mức thưởng là? (đã hoàn thành thời gian thử việc và được ký HĐLĐ).",
+          dapAn: "Thưởng 700.000 VNĐ/1 nhân sự được giới thiệu thành công",
+        },
+        {
+          cauHoi: "Quy định làm việc của CBNV?",
+          dapAn: "Cả a và b đều đúng",
+        },
+        {
+          cauHoi:
+            "Tiêu chuẩn năng lực của CBLĐ (T5,6): CBLĐ phải tham gia đào tạo và thi để lấy đủ chứng chỉ năng lực yêu cầu cho chức danh đảm trách, trong thời hạn?",
+          dapAn: "Cả 2 đáp an trên đều đúng",
+        },
+        {
+          cauHoi:
+            "Trực tiếp/phối hợp với các lực lượng bắt giữ được các vụ cướp giật có tính chất nguy hiểm hoặc gây thương tích nặng cho CBNV/người bị hại tại các khu vực của Tập đoàn/Công ty. Mức thưởng là?",
+          dapAn: "Thưởng 50 triệu đồng/lần.",
+        },
+        {
+          cauHoi: "Mức Khen thưởng CBNV có sáng kiến trong công việc là?",
+          dapAn:
+            "CBNV được xem xét khen thưởng tùy theo hiệu  quả của các sáng kiến.",
+        },
+        {
+          cauHoi: "CBNV cấp T7 đi làm muộn, hình thức xử lý là?\n",
+          dapAn: "Trừ 200.000đ Thưởng YTCLCV của 1 tháng",
+        },
+        {
+          cauHoi:
+            "CBNV tố cáo hành vi tiêu cực, trộm cắp, tham nhũng trong toàn Tập đoàn (cho TGĐ Tập đoàn theo địa chỉ hòm thư v.quangnv@vingroup.net, số điện thoại: 0983466868) mà các thông tin này sau khi điều tra, xác minh được xác định là có cơ sở. Trong trường hợp giá trị tài sản/tiền tham ô, trộm cắp, nhận hối lộ bị tố cáo > 50 triệu đồng. Mức thưởng là?",
+          dapAn: "Thưởng 300 triệu đồng/lần",
+        },
+        {
+          cauHoi:
+            "CBNV khi biết thông tin về việc giao việc sai nguyên tắc thì phải làm thế nào?",
+          dapAn: "Báo cáo CBLĐ có thẩm quyền",
+        },
+        {
+          cauHoi:
+            "Bảo hiểm bắt buộc theo quy định của Nhà nước (Bảo hiểm Xã hội, Bảo hiểm Y tế, Bảo hiểm Thất nghiệp) Áp dụng với CBNV nào?",
+          dapAn: "Áp dụng đối với CBNV đã ký HĐLĐ chính thức.",
+        },
+        {
+          cauHoi: "Giá trị cốt lõi của người Vingroup?\n",
+          dapAn: "Tín - Tâm - Trí - Tốc - Tinh - Nhân",
+        },
+        {
+          cauHoi:
+            "Trực tiếp/phối hợp với các lực lượng bắt giữ được các vụ Trộm cắp tài sản có giá trị ≥ 2 triệu đồng mà cơ quan nhà nước có thẩm quyền ra quyết định khởi tố đối tượng phạm tội nhưng không có quyết định khởi tố vì các lý do: người bị hại không trình báo cơ quan công an/ rút đơn trình báo, đối tượng phạm tội chết/tâm thần/chưa đủ tuổi chịu trách nhiệm hình sự, luật thay đổi trong quá trình tố tụng tại các khu vực của Tập đoàn/Công ty. Mức thưởng là?",
+          dapAn: "Thưởng 09 triệu đồng/lần.",
+        },
+        {
+          cauHoi:
+            "CBNV chịu trách nhiệm về mảng việc liên quan phải báo cáo khẩn lên Lãnh đạo Công ty khi xảy ra các sự việc nào? \n",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi: "CBNV có phải sử dụng chữ ký email không? (nội quy cũ)",
+          dapAn: "Có và theo mẫu quy định",
+        },
+        {
+          cauHoi: "Trường hợp nào sau đây xử lý theo lỗi nhóm 2?",
+          dapAn: "Không hoàn thành nhiệm vụ được giao (chưa gây hậu quả)",
+        },
+        {
+          cauHoi: "CBLĐ căn cứ vào đâu để xác định mức xử lý vi phạm?",
+          dapAn: "Căn cứ vào mức độ vi phạm/gây hậu quả & tần suất vi phạm.",
+        },
+        {
+          cauHoi:
+            "Chế độ hỗ trợ đặc thù khu vực công trường đang thi công (khu vực công trường đang thi công điều kiện làm việc khó khăn) áp dụng Nhân viên hành chính (của các phòng bảo vệ Công trường), mức hỗ trợ là gì?\n",
+          dapAn: "Số tiền hỗ trợ 500.000 VNĐ/tháng",
+        },
+        {
+          cauHoi:
+            '"Công bằng, Kỷ luật, Văn minh" là tuyên ngôn văn hóa Vingroup nào?',
+          dapAn: "Văn hóa vingroup",
+        },
+        {
+          cauHoi: 'Thưởng ý thức chất lượng công việc ("Thưởng YTCLCV") là:',
+          dapAn:
+            "Là khoản thưởng ý thức cho CBNV theo thỏa thuận tại Hợp đồng lao động (“HĐLĐ”). CBLĐ/CBNV có thể bị trừ thưởng/cắt thưởng YTCLCV khi vi phạm quy định/nội quy của Công ty.",
+        },
+        {
+          cauHoi:
+            "CBNV báo cáo (theo địa chỉ hòm thư gopy@vingroup.net; đường dây nóng 0988428787; ANNB) các thông tin về lãng phí ở mức độ lớn trong Tập đoàn/Công ty mà các thông tin này sau khi điều tra, xác minh được xác định là có cơ sở. Mức thưởng là?",
+          dapAn: "Thưởng từ 20 đến 50 triệu đồng/lần.",
+        },
+        {
+          cauHoi:
+            'CBNV bị tai nạn lao động tại nơi làm việc "bị tai nạn làm mất hoàn toàn khả năng lao động hoặc tử vong" được hỗ trợ?',
+          dapAn: "Cả a và b đều đúng",
+        },
+        {
+          cauHoi: "Quy định làm việc của CBLĐ",
+          dapAn: "Cả a và b đều đúng",
+        },
+        {
+          cauHoi:
+            "Tập đoàn hỗ trợ tiền mặt cho CBNV trong trường hợp nào sau đây?",
+          dapAn: "Tất cả các đáp án trên đều đúng",
+        },
+        {
+          cauHoi:
+            "CBLĐ cấp trên giao việc, đưa chỉ đạo xử lý công việc cho CBNV không phải cấp dưới trực tiếp của mình (Trừ trường hợp khẩn cấp)sẽ bị xử lý như thế nào?",
+          dapAn: "Trừ từ 30% đến 100% thưởng YTCLCV của 01 tháng",
+        },
+        {
+          cauHoi:
+            "Thưởng giới thiệu ứng viên với các vị trí tuyển dụng là cấp T3. Mức thưởng là? (đã hoàn thành thời gian thử việc và được ký HĐLĐ).\n",
+          dapAn: "Thưởng 30 triệuVNĐ/1 nhân sự được giới thiệu thành công",
+        },
+        {
+          cauHoi:
+            "CBNV quẹt thẻ/vân tay/nhận diện khuôn mặt cho người khác trong trường hợp nào?",
+          dapAn: "Đón khách.",
+        },
+        {
+          cauHoi:
+            "Nơi tra cứu chính thức các tài liệu, thông tin liên quan đến hoạt động của Tập đoàn/Công ty là?",
+          dapAn:
+            "Cẩm nang thông tin (“Cẩm nang TT”) (https://camnangtt.vingroup.net)",
+        },
+        {
+          cauHoi:
+            'Chế độ hỗ trợ đặc thù khi thực hiện công việc Nghiệm thu – Bàn giao tại BQL Vận hành "CBLĐ (T5, 6) khối Vận hành tại các KĐT trong giai đoạn nghiệm thu, bàn giao tại công trường;  Phải dùng điện thoại cá nhân để làm việc, môi trường làm việc chưa hoàn thiện (khói bụi công trường)" áp dụng với Các chức danh thực tế tham gia tại từng giai đoạn, mức hỗ trợ là gì?\n',
+          dapAn: "Cả 3 đáp án trên",
+        },
+        {
+          cauHoi:
+            "CBNV nghỉ làm không được cấp trên phê duyệt sẽ bị xử lý như thế nào?",
+          dapAn: "Trừ từ 30%-100% Thưởng YTCLCV của 01 tháng.",
+        },
+        {
+          cauHoi: "CBNV cấp T8 đi làm muộn, hình thức xử lý là?",
+          dapAn: "Trừ 100.000đ Thưởng YTCLCV của 1 tháng",
+        },
+        {
+          cauHoi:
+            'CBNV ốm đau, bệnh tật, tai nạn "Mức nghiêm trọng" (có phẫu thuật nằm viện trên 5 ngày) được hỗ trợ?',
+          dapAn: "Quà thăm hỏi từ 1 - 3 triệu đồng/trường hợp.",
+        },
+        {
+          cauHoi:
+            "Chế độ hỗ trợ đặc thù khu vực Phòng rác, Hầm (Làm việc tại hầm B1 trở xuống phải tiếp xúc với khói bụi, mùi xe, tiếng ồn…) áp dụng  Đội trưởng, Tổ trưởng, Nhân viên: Bảo vệ, HK, Kỹ thuật, mức hỗ trợ là gì?\n",
+          dapAn: "Số tiền hỗ trợ 500.000 VNĐ/tháng",
+        },
+        {
+          cauHoi:
+            "Đối với mảng vận hành:  Đối với một lỗi cụ thể nếu CBNV bị sai lặp lại trong cùng một ngày/một ca làm việc và không gây hậu quả , hình thức xử lý là?\n",
+          dapAn: "Xử lý vi phạm lỗi Nhóm 3",
+        },
+        {
+          cauHoi: "Trách nhiệm báo cáo CBLĐ cấp trên của CBNV?",
+          dapAn: "Cả 3 đáp án trên",
+        },
+        {
+          cauHoi: "Sứ mệnh của người Vingroup?",
+          dapAn: "Vì một cuộc sống tốt đẹp hơn cho mọi người.",
+        },
+        {
+          cauHoi:
+            "Hình thức xử lý đối với cấp T5, T6 về các lỗi sai sót/kỹ thuật nhỏ khi thực hiện Quy định trong Quy định nội bộ chung và không gây hậu quả; các lỗi hành chính thuộc mục 3 (thời giờ làm việc), mục 4 (trang phục làm việc) Phần II Quy định nội bộ chung ?\n",
+          dapAn: "Trừ thưởng YTCLCV 300.000 đồng/lần",
+        },
+        {
+          cauHoi:
+            'CBNV vi phạm lỗi "không hoàn thành nhiệm vụ được giao" (nhưng chưa gây hậu quả nghiêm trọng/đặc biệt nghiêm trọng) sẽ bị xử lý theo nhóm lỗi nào?',
+          dapAn: "Nhóm 2: Các lỗi lớn",
+        },
+        {
+          cauHoi:
+            "Trực tiếp/phối hợp với các lực lượng bắt giữ được các vụ Trộm cắp tài sản có giá trị ≥ 2 triệu đồng mà cơ quan nhà nước có thẩm quyền ra quyết định khởi tố đối tượng phạm tội tại các khu vực của Tập đoàn/Công ty. Mức thưởng là?",
+          dapAn: "Thưởng 30 triệu đồng/lần.",
+        },
+        {
+          cauHoi:
+            "CBNV làm việc tại khu vực quầy lễ tân/sàn giao dịch tiếp xúc với khách hàng cần chú ý gì?\n",
+          dapAn: "Cả đáp án 1 và 2 đều đúng",
+        },
+        {
+          cauHoi: "Mức ưu đãi học phí VinUni của CBNV (Cấp T5,6) là?",
+          dapAn: "Cấp T5: 10%;  Cấp T6: 7.5%",
+        },
+        {
+          cauHoi:
+            "Cung cấp thông tin cho An ninh Nội bộ (“ANNB”) về việc nhà thầu/nhà cung cấp hối lộ, tặng quà hoặc trích hoa hồng cho mình hoặc đồng nghiệp của mình và kết quả điều tra xác định thông tin này là có cơ sở. Mức thưởng là?",
+          dapAn: "Thưởng 20 triệu đồng/lần.",
+        },
+        {
+          cauHoi:
+            "Thưởng giới thiệu ứng viên với các vị trí tuyển dụng là cấp T1. Mức thưởng là? (đã hoàn thành thời gian thử việc và được ký HĐLĐ).\n",
+          dapAn: "Thưởng 100 triệu VNĐ/1 nhân sự được giới thiệu thành công",
+        },
+        {
+          cauHoi: "CBNV cấp T7, 8 được ưu đãi khi sử dụng dịch vụ nội bộ nào?",
+          dapAn: "Vinschool, VinUni, Brighton College",
+        },
+        {
+          cauHoi: "CBNV khi cần vắng mặt tại nơi làm việc phải?",
+          dapAn:
+            "Phải xin phép Cán bộ lãnh đạo (“CBLĐ”) trực tiếp của mình; đồng thời phải thông báo cho các cá nhân/bộ phận liên quan trong trường hợp sự vắng mặt của mình sẽ ảnh hưởng đến công việc của các cá nhân/bộ phận khác.",
+        },
+        {
+          cauHoi:
+            "Hình thức xử lý với nhóm lỗi Đặc biệt nghiêm trọng (nhóm 1)?",
+          dapAn:
+            "Sa thải hoặc chấm dứt HĐLĐ hoặc giáng chức và/hoặc hạ lương, trường hợp vi phạm pháp luật hình sự chuyển cơ quan Công an khởi tố theo quy định",
+        },
+        {
+          cauHoi:
+            "Mức ưu đãi học phí  Brighton College   của CBNV (Cấp T5,6) là?",
+          dapAn: "Mức ưu đãi 7.5%",
+        },
+        {
+          cauHoi:
+            "Chế độ hỗ trợ đặc thù Các dự án xa, khó tuyển dụng nhân sự địa phương (Hỗ trợ thuê nhà do CBLĐ được tuyển dụng/điều động từ địa phương khác đến) áp dụng Đội trưởng, Tổ trưởng, Nhân viên: Bảo vệ, Housekeeping (HK), Kỹ thuật, Cây xanh, mức hỗ trợ là gì?\n",
+          dapAn: "Số tiền hỗ trợ 500.000 VNĐ/tháng",
+        },
+        {
+          cauHoi:
+            "CBNV được khám sức khỏe định kỳ ntn? (tại thời điểm tổ chức khám sức khỏe)",
+          dapAn: "CBNV được khám sức khỏe định kỳ 01 lần/năm.",
+        },
+        {
+          cauHoi:
+            'CBNV vi phạm lỗi "Không hoàn thành nhiệm vụ" sẽ bị xử lý theo nhóm lỗi đặc biệt nghiêm trọng trong trường hợp nào?',
+          dapAn:
+            "Không hoàn thành nhiệm vụ quan trọng gây hậu quả nghiêm trọng, hoặc trong thời gian dài (từ 02 tháng trở lên) mà không báo cáo kịp thời lên cấp trên và có kế hoạch xử lý.",
+        },
+        {
+          cauHoi:
+            "Nhân viên an ninh giân lận doanh thu vé xe của Trung tâm thương mại để trực lợi cá nhân sẽ bị xử lý vi phạm theo lỗi nhóm nào?",
+          dapAn: "Nhóm 1: Các lỗi đặc biệt nghiêm trọng",
+        },
+        {
+          cauHoi:
+            'Lỗi nào sau đây "Không" thuộc nhóm các lỗi đặc biệt nghiêm trọng?',
+          dapAn: "Quên không chấm công.",
+        },
+        {
+          cauHoi:
+            "CBNV gửi báo cáo/tờ trình kém chất lượng đến CBLĐ có thể bị xử lý như thế nào?",
+          dapAn: "Trừ từ 30% đến 100% thưởng YTCLCV của 01 tháng",
+        },
+        {
+          cauHoi: "CBNV có số ngày nghỉ phép theo quy định của pháp luật là?",
+          dapAn:
+            "12 ngày phép/năm nếu đi làm đủ 12 tháng. Mỗi 5 năm làm việc sẽ phát sinh thêm 1 ngày phép",
+        },
+        {
+          cauHoi:
+            '"Bằng khát vọng tiên phong cùng chiến lược đầu tư - phát triển bền vững, Vingroup định hướng phát triển thành một Tập đoàn Công nghệ - Công nghiệp - Thương mại Dịch vụ hàng đầu khu vực, không ngừng đổi mới, sáng tạo để kiến tạo hệ sinh thái các sản phẩm dịch vụ đẳng cấp, góp phần nâng cao chất lượng cuộc sống của Nhân loại và nâng tầm vị thế của thương hiệu Việt trên trường quốc tế". Là tuyên ngôn văn hóa Vingroup nào?',
+          dapAn: "Tầm nhìn",
+        },
+        {
+          cauHoi: "Gian lận trong chấm công vi phạm nhóm lỗi nào?",
+          dapAn: "Nhóm 1: Các lỗi đặc biệt nghiêm trọng",
+        },
+        {
+          cauHoi:
+            "Thưởng giới thiệu ứng viên với các vị trí tuyển dụng là cấp T7. Mức thưởng là? (đã hoàn thành thời gian thử việc và được ký HĐLĐ).\n",
+          dapAn: "Thưởng 3 triệu VNĐ/1 nhân sự được giới thiệu thành công",
+        },
+        {
+          cauHoi: "Khi nhận được mail lạ, CBNV cần làm gì?",
+          dapAn: "Không mở và báo cho BP CNTT",
+        },
+        {
+          cauHoi: "Khẩu hiệu (Slogan) người Vingroup?\n",
+          dapAn: "Mãi mãi tinh thần khởi nghiệp.",
+        },
+        {
+          cauHoi:
+            "Trường hợp phát sinh sự vụ khẩn cấp, các CBNV được phép hành động không tuân theo nguyên tắc trên nhưng phải báo cáo cấp trên và CBLĐ liên quan trong vòng bao nhiêu giờ kể từ thời điểm phát sinh việc giao/nhận việc?",
+          dapAn: "2 giờ",
+        },
+        {
+          cauHoi:
+            "Đâu là các loại khen thưởng thuộc nhóm khen thưởng thành tích?",
+          dapAn:
+            "Thưởng thành tích cuối năm; Thưởng thành tích chiến dịch dự án; Thưởng cá nhân/tập thể có thành tích nổi trội nhân ngày thành lập Tập đoàn",
+        },
+        {
+          cauHoi:
+            '"Vì một cuộc sống tốt đẹp hơn cho mọi người" là tuyên ngôn nào trong Tuyên ngôn văn hóa Vingroup?',
+          dapAn: "Sứ mệnh",
+        },
+        {
+          cauHoi: "CBNV được nhận Hỗ trợ đặc thù trong trường hợp nào?",
+          dapAn:
+            "Áp dụng với CBNV làm việc trong các môi trường/tại các vị trí có thể ảnh hưởng đến sức khỏe",
+        },
+        {
+          cauHoi:
+            'Nội dung "CBNV có trách nhiệm bảo mật Thông tin mật mà mình tiếp cận/thu thập được trong quá trình làm việc theo Quy định hoặc Cam kết đã ký với Tập đoàn/Công ty, chỉ được phép sử dụng/trao đổi Thông tin mật để phục vụ công việc mình phụ trách" nằm trong quy định nào sau đây? (nội quy cũ)',
+          dapAn: "Quy định về trao đổi và bảo mật thông tin.",
+        },
+        {
+          cauHoi: "Có mấy tiêu chí môi trường làm việc Vingroup?",
+          dapAn: "5",
+        },
+        {
+          cauHoi:
+            "CBNV có lời nói hoặc hành vi xúc phạm danh dự, nhân phẩm đối với đồng nghiệp, khách hàng, đối tác. Hình thức xử lý là gì?  \n",
+          dapAn: "Xử lý vi phạm lỗi Nhóm 1",
+        },
+        {
+          cauHoi:
+            "Phát hiện vi phạm và báo cáo CBLĐ cấp trên hoặc Thanh tra là trách nhiệm của ai?",
+          dapAn: "Tất cả CBNV.",
+        },
+        {
+          cauHoi:
+            "Phần chi phí hỗ trợ tai nạn mức rất nghiêm trọng được trích hỗ trợ từ đâu?",
+          dapAn:
+            "Trích từ quỹ phúc lợi Công ty hoặc chuyển Quỹ Thiện Tâm hỗ trợ nếu CBNV gặp nạn có gia cảnh đặc biệt.",
+        },
+        {
+          cauHoi:
+            "CBNV Khối văn phòng cần tuân thủ các quy định nào về trang phục làm việc?\n",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+        {
+          cauHoi:
+            "Tiêu chí để CBNV được sử dụng dịch vụ nội bộ là? (nội quy cũ)",
+          dapAn:
+            "Áp dụng với CBNV đã ký HĐLĐ chính thức với Công ty, mức ưu đãi khác nhau theo phân cấp cán bộ",
+        },
+        {
+          cauHoi:
+            "Đâu là quy định đúng về trang phục làm việc theo quy định nội bộ chung?",
+          dapAn:
+            "Thứ 02 đến thứ 06 hàng tuần: Mặc trang phục, đi giày công sở lịch sự; Ngày làm việc thứ 7: Trang phục tự do nhưng vẫn đảm bảo lịch sự  (không mặc trang phục quá ngắn/mỏng/khoét xẻ sâu). CBNV Khối Vận hành, Công trường: Mặc đồng phục do Công ty cấp phát theo các chức danh.",
+        },
+        {
+          cauHoi:
+            "Hình thức xử lý đối với cấp T8 về các lỗi sai sót/kỹ thuật nhỏ khi thực hiện Quy định trong Quy định nội bộ chung và không gây hậu quả; các lỗi hành chính thuộc mục 3 (thời giờ làm việc), mục 4 (trang phục làm việc) Phần II Quy định nội bộ chung ?",
+          dapAn: "Trừ thưởng YTCLCV 100.000 đồng/lần",
+        },
+        {
+          cauHoi:
+            "Thưởng giới thiệu ứng viên với các vị trí tuyển dụng là cấp T2. Mức thưởng là? (đã hoàn thành thời gian thử việc và được ký HĐLĐ).\n",
+          dapAn: "Thưởng 70 triệu VNĐ/1 nhân sự được giới thiệu thành công",
+        },
+        {
+          cauHoi:
+            "Hình thức xử lý đối với cấp T7 về các lỗi sai sót/kỹ thuật nhỏ khi thực hiện Quy định trong Quy định nội bộ chung và không gây hậu quả; các lỗi hành chính thuộc mục 3 (thời giờ làm việc), mục 4 (trang phục làm việc) Phần II Quy định nội bộ chung ?\n",
+          dapAn: "Trừ thưởng YTCLCV 200.000 đồng/lần",
+        },
+        {
+          cauHoi:
+            'Đâu không phải là hành động được xét khen thưởng "Người tốt việc tốt"?',
+          dapAn:
+            "Các đề xuất có thể áp dụng vào thực tế, giúp cải thiện hiệu quả công việc",
+        },
+        {
+          cauHoi:
+            'CBNV bị tai nạn lao động tại nơi làm việc "phải nằm viện quá 03 ngày" được hỗ trợ?',
+          dapAn: "Thăm hỏi từ 5 – 30 triệu đồng/trường hợp.",
+        },
+        {
+          cauHoi:
+            '"Công bằng, minh bạch, thượng tôn kỷ luật - Văn minh, tôn trọng, hợp tác" là một trong những nội dung của?',
+          dapAn: "Môi trường làm việc của Vingroup.",
+        },
+        {
+          cauHoi:
+            "CBNV Khối Vận hành, Công trường cần tuân thủ các quy định nào về trang phục làm việc?",
+          dapAn: "Mặc đồng phục do Công ty cấp phát theo các chức danh",
+        },
+        {
+          cauHoi:
+            "Chế độ hỗ trợ đặc thù Phản ứng nhanh (Thường xuyên di chuyển trong khu đô thị, phải tiếp xúc/ xử lý các đối tượng trộm cắp, lưu manh, phương tiện vi phạm… nên tính chất công việc nguy hiểm) áp dụng với Đội trưởng/Tổ trưởng/Nhân viên: Bảo vệ được đánh giá đạt khóa đào tạo võ thuật và kỹ năng sơ cấp cứu cơ bản cho bảo vệ Vinhomes, mức hỗ trợ là gì?\n",
+          dapAn: "Số tiền hỗ trợ 1.000.000 VNĐ/tháng",
+        },
+        {
+          cauHoi: "Hút thuốc lá tại nơi làm việc xử lý như thế nào",
+          dapAn: "Trừ từ 30% đến 100% thưởng YTCLCV của 01 tháng",
+        },
+        {
+          cauHoi: "CBLĐ cấp trên trực tiếp bị xử lý liên đới khi?\n",
+          dapAn: "Cả a và b đều đúng",
+        },
+        {
+          cauHoi:
+            "Các hành vi nào sau đây được xử lý theo nhóm lỗi các lỗi lớn?",
+          dapAn:
+            "Không tuân thủ các quy định, quy trình và tiêu chuẩn công việc có liên quan nhưng chưa gây hậu quả nghiêm trọng",
+        },
+        {
+          cauHoi:
+            "Đối với mảng vận hành: CBNV sử dụng điện thoại trong giờ làm việc quá 5 phút và không chứng minh được là lý do công việc, hình thức xử lý là?\n",
+          dapAn: "Xử lý vi phạm lỗi Nhóm 3",
+        },
+        {
+          cauHoi: "CBLĐ cần phải lưu ý gì khi giao việc cho NV dưới quyền?",
+          dapAn:
+            "Người giao việc cần phải yêu cầu cụ thể về thời hạn trả lời hoặc báo cáo kết quả thực hiện công việc.",
+        },
+        {
+          cauHoi:
+            'Chế độ hỗ trợ đặc thù khi thực hiện công việc Thường xuyên sử dụng phương tiện cá nhân di chuyển tại BQL trong thời gian làm việc do KĐT rộng ( Phải di chuyển nhiều trong các khu đô thị có diện tích lớn "cấp 1, đại đô thị") áp dụng với Đội trưởng/Tổ trưởng: Bảo vệ, HK, Cây xanh, Kỹ thuật, mức hỗ trợ là gì?\n',
+          dapAn: "Số tiền hỗ trợ 300.000 VNĐ/tháng",
+        },
+        {
+          cauHoi:
+            "Đối với các công việc mang tính sự vụ không ảnh hưởng đến tiến độ và nằm trong phạm vi công việc được giao, CBNV cần thực hiện báo cáo như thế nào?",
+          dapAn: "Báo cáo CBLĐ sau khi đã giải quyết xong công việc.",
+        },
+        {
+          cauHoi:
+            "Chống lệnh hoặc xúi giục người khác chống lệnh của cấp trên sẽ bị xử phạt theo lỗi nhóm nào?",
+          dapAn: "Nhóm 1: Các lỗi đặc biệt nghiêm trọng",
+        },
+        {
+          cauHoi: "Hình thức xử lý với nhóm lỗi lớn (nhóm 2)?",
+          dapAn:
+            "Trừ từ 30% đến 100% thưởng YTCLCV của 01 tháng căn cứ theo mức độ vi phạm đối với lỗi không tuân thủ Quy định tại nơi làm việc thuộc Quy định nội bộ chung và CBLĐ bị xử lý liên đới",
+        },
+        {
+          cauHoi:
+            "Nhặt được tài sản/tiền mặt khách để quên/làm rơi, trả lại cho khách hoặc được khách hàng khen ngợi việc làm tốt thể hiện được giá trị văn hóa, hình ảnh, uy tín của Tập đoàn/Công  ty. Mức thưởng là?",
+          dapAn:
+            "Tuyên dương hoặc thưởng tiền 100.000 đồng (riêng hành vi trả lại tài sản khách hàng  bỏ quên/làm rơi được xem xét thưởng đến 2.000.000 đồng/lần tùy thuộc vào hoàn cảnh, số tiền và giá trị tài sản nhặt được)",
+        },
+        {
+          cauHoi:
+            "CBNV che giấu lỗi của đồng nghiệp, đối tác sẽ bị xử lý vi phạm theo lỗi nhóm nào?",
+          dapAn: "Nhóm 1: Các lỗi đặc biệt nghiêm trọng",
+        },
+        {
+          cauHoi: "Có bao nhiêu nhóm lỗi xử lý vi phạm?",
+          dapAn: "3",
+        },
+        {
+          cauHoi:
+            "CBNV tố cáo hành vi tiêu cực, trộm cắp, tham nhũng trong toàn Tập đoàn (cho TGĐ Tập đoàn theo địa chỉ hòm thư v.quangnv@vingroup.net, số điện thoại: 0983466868) mà các thông tin này sau khi điều tra, xác minh được xác định là có cơ sở. Trong trường đủ cơ sở để cơ quan Nhà nước xử lý hình sự người vi phạm. Mức thưởng là?",
+          dapAn: "Thưởng 1 tỷ đồng/lần",
+        },
+        {
+          cauHoi:
+            "Chế độ hỗ trợ đặc thù khu vực công trường đang thi công (khu vực công trường đang thi công điều kiện làm việc khó khăn) áp dụng Trưởng phòng Bảo vệ, mức hỗ trợ là gì?",
+          dapAn: "Số tiền hỗ trợ 2.000.000 VNĐ/tháng",
+        },
+        {
+          cauHoi:
+            "CBLĐ Vi phạm nguyên tắc giao việc (giao việc hoặc thực hiện công việc được giao không đúng thẩm quyền/quy định), hình thức xử lý là gì?\n",
+          dapAn: "Xử lý vi phạm lỗi Nhóm 1",
+        },
+        {
+          cauHoi:
+            "Trực tiếp/phối hợp với các lực lượng bắt giữ được các đối tượng Buôn bán, sử dụng các chất kích thích bị cấm tại các khu vực của Tập đoàn/Công ty. Mức thưởng là?",
+          dapAn: "Thưởng tiền đến 20 triệu đồng/lần.",
+        },
+        {
+          cauHoi:
+            "Tất cả CBNV tại khu vực văn phòng/khu vực làm việc cần chú ý gì?  \n",
+          dapAn: "Cả 3 đáp án trên đều đúng",
+        },
+      ];
+
+      const { createApp, ref } = Vue;
+
+      createApp({
+        setup() {
+          const items = ref(DATA);
+          return {
+            items,
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
